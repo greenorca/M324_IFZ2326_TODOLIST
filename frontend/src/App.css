@@ -10,6 +10,9 @@
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
+    width: 30%;
+    display: block;
+    height: 20%;
   }
 }
 
@@ -22,6 +25,24 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.todo-list {
+  & > li {
+    list-style: none;
+    display: flex;
+    gap: 5px 8px;
+    & span {
+      flex-grow: 3;
+    }
+    & button {
+      width: 5em;
+      font-weight: bold;
+      flex-grow: 1;
+      color: green;
+      /*background-color: #282c34;*/
+    }
+  }
 }
 
 .App-link {

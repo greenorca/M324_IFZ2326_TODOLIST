@@ -140,11 +140,11 @@ class App extends React.Component {
    */
   renderTasks(todos) {
     return (
-      <ul>
+      <ul className="todo-list">
         {todos.map((todo, index) => (
           <li key={todo.taskdescription}>
-            {"Task " + (index+1) + ": "+ todo.taskdescription}
-            <button onClick={this.handleClick.bind(this, todo.taskdescription)}>Done</button>
+            <span>{"Task " + (index+1) + ": "+ todo.taskdescription}</span>
+            <button onClick={this.handleClick.bind(this, todo.taskdescription)}>&#10004;</button>
           </li>
         ))}
       </ul>
@@ -162,7 +162,8 @@ class App extends React.Component {
           <h1>
             ToDo Liste
           </h1>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} className='todo-form'>
+            <label htmlFor="taskdescription">Neues Todo anlegen:</label>
             <input
               type="text"
               value={this.state.taskdescription}
