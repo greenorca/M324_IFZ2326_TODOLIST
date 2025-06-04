@@ -76,7 +76,7 @@ class App extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log("Sending task description to Spring-Server: "+this.state.taskdescription);
-    fetch("http://localhost:8080/tasks", {  // API endpoint (the complete URL!) to save a taskdescription
+    fetch("http://localhost:8080/task", {  // API endpoint (the complete URL!) to save a taskdescription
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -103,7 +103,7 @@ class App extends React.Component {
   ** It updates the component's state with the fetched todos from the API Endpoint '/'.
   */
   componentDidMount() {
-    fetch("http://localhost:8080")    // API endpoint (the complete URL!) to get a taskdescription-list
+    fetch("http://localhost:8080/task")    // API endpoint (the complete URL!) to get a taskdescription-list
       .then(response => response.json())
       .then(data => {
         console.log("Receiving task list data from Spring-Server: ");
@@ -116,14 +116,13 @@ class App extends React.Component {
  /** Is called when the Done-Butten is pressed. It sends a POST request to the API endpoint '/delete' and updates the component's state with the new todo.
   ** In this case if the task with the unique taskdecription is found on the server, it will be removed from the list.
   */
-  handleClick = taskdescription => {
+  handleClick = id => {
     console.log("Sending task description to delete on Spring-Server: "+taskdescription);
-    fetch(`http://localhost:8080/delete`, { // API endpoint (the complete URL!) to delete an existing taskdescription in the list
-      method: "POST",
+    fetch(`http://localhost:8080/task/${id}`, { // API endpoint (the complete URL!) to delete an existing taskdescription in the list
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ taskdescription: taskdescription })
+      }
     })
     .then(response => {
       console.log("Receiving answer after deleting on Spring-Server: ");
