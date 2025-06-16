@@ -12,38 +12,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Task;
+import com.example.demo.dto.TaskDto;
 import com.example.demo.repository.TaskRepository;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/task")
 public class TaskController {
 
-    @Autowired
-    private TaskRepository taskRepository;
+	@Autowired TaskRepository taskRepository;
 
-
-    @CrossOrigin
 	@GetMapping
 	public ResponseEntity<List<Task>> getAllTasks() {
 
     return ResponseEntity.ok(taskRepository.findAll());
 	}
 
-	@CrossOrigin
 	@PostMapping
-	public ResponseEntity<String> addTask(@RequestBody String taskdescription) {
+	public ResponseEntity<String> addTask(@RequestBody TaskDto taskdescription) {
 		System.out.println("API EP '/tasks': '" + taskdescription + "'");
 		Task t = new Task();
-    t.setTaskdescription(taskdescription);
+    t.setTaskdescription(taskdescription.getTaskdescription());
     taskRepository.save(t);
     return ResponseEntity.ok("OK");
 	}
 
-	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delTask(@PathVariable Long id) {
 		System.out.println("API EP '/delete': '" + id + "'");
@@ -51,5 +47,8 @@ public class TaskController {
 		return ResponseEntity.ok("OK");
 	}
 
+  protected void deleteAll() {
+		taskRepository.deleteAll();
+  }
 
 }

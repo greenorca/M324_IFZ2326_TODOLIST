@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.hamcrest.Matchers;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ public class TaskControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(taskController).build();
     }
 
+    @BeforeEach
+    public void setUpEachTest() {
+        taskController.deleteAll();
+    }
+
     @Test
     @Transactional
     public void testEmptyTaskListViaREST(){
@@ -54,7 +60,7 @@ public class TaskControllerTest {
         }
     }
 
-    @Test
+@Test
 @Transactional
 public void testAddTaskListViaREST(){
     final String task = "test task";

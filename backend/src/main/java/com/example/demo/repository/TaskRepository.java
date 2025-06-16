@@ -6,4 +6,5 @@ import com.example.demo.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
+    void deleteAll();
 }
