@@ -1,7 +1,8 @@
-export default function Demo() {
+/** Demo Dummy für Basic Jest test */
+export default Demo = () => {
   return (
     <div>
-      <h1 className="headline">hello world</h1>
+      <h1 className="headline">Demo</h1>
     </div>
   )
 }
