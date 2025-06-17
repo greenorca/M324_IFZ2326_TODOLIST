@@ -33,7 +33,7 @@ public class TaskController {
 
 	@PostMapping
 	public ResponseEntity<String> addTask(@RequestBody TaskDto taskdescription) {
-		System.out.println("API EP '/tasks': '" + taskdescription + "'");
+		System.out.println("API EP '/task': '" + taskdescription + "'");
 		Task t = new Task();
     t.setTaskdescription(taskdescription.getTaskdescription());
     taskRepository.save(t);
