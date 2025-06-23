@@ -34,12 +34,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file backend/pom.xml
 
-    - name: Upload frontend build
-      uses: actions/upload-artifact@v4
-      with:
-        name: backend-build
-        path: backend/target/*.jar
-
     - name: Report
       uses: dorny/test-reporter@v1
       if: always()
@@ -52,7 +46,7 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: springboot-app
+        name: backend-build
         path: backend/target/*.jar
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
