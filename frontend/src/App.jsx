@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import logo from './assets/react.svg'
 import './App.css'
+import todoFun from './functions/todo-fun';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -12,20 +13,8 @@ function App() {
   const handleSubmit = event => {
     event.preventDefault();
     console.log("Sending task description to Spring-Server: "+taskdescription);
-    fetch("http://localhost:8080/tasks", {  // API endpoint (the complete URL!) to save a taskdescription
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ taskdescription: taskdescription }) // both 'taskdescription' are identical to Task-Class attribute in Spring
-    })
-    .then(response => {
-      console.log("Receiving answer after sending to Spring-Server: ");
-      console.log(response);
-      window.location.href = "/";
-      setTaskdescription("");             // clear input field, preparing it for the next input
-    })
-    .catch(error => console.log(error))
+    todoFun().postNewTodo(taskdescription);
+    setTaskdescription("");             // clear input field, preparing it for the next input
   }
 
    /** Is called when ever the html input field value below changes to update the component's state.
@@ -44,30 +33,17 @@ function App() {
   ** It updates the component's state with the fetched todos from the API Endpoint '/'.
   */
   useEffect(() => {
-    fetch("http://localhost:8080/").then(response => response.json()).then(data => {
-      setTodos(data);
-    });
+    todoFun().fetchTodos()
+    .then(data => setTodos(data))
+    .catch(error => console.log(error))
   }, []);
 
 
  /** Is called when the Done-Button is pressed. It sends a POST request to the API endpoint '/delete' and updates the component's state with the new todo.
   ** In this case if the task with the unique taskdescription is found on the server, it will be removed from the list.
   */
-  const handleDelete = (event, taskdescription) => {
-    console.log("Sending task description to delete on Spring-Server: "+taskdescription);
-    fetch(`http://localhost:8080/delete`, { // API endpoint (the complete URL!) to delete an existing taskdescription in the list
-      method: "POST",
-      body: JSON.stringify({ taskdescription: taskdescription }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => {
-      console.log("Receiving answer after deleting on Spring-Server: ");
-      console.log(response);
-      window.location.href = "/";
-    })
-    .catch(error => console.log(error))
+  const handleDelete = (event, id) => {
+    todoFun().deleteTodo(id).catch(error => console.log(error))
   }
 
   /**
@@ -79,9 +55,9 @@ function App() {
     return (
       <ul className="todo-list">
         {todos.map((todo, index) => (
-          <li key={todo.taskdescription}>
+          <li key={todo.id}>
             <span>{"Task " + (index+1) + ": "+ todo.taskdescription}</span>
-            <button onClick={(event) => handleDelete(event, todo.taskdescription) }>&#10004;</button>
+            <button onClick={(event) => handleDelete(event, todo.id) }>&#10004;</button>
           </li>
         ))}
       </ul>
